@@ -184,18 +184,25 @@ Runs daily at 11:05 AM. Queries `alert_flags` and branches conditionally: if no 
 ```
 Automated-Transaction-Monitoring-Pipeline/
 │
-├── databricks/
+├── Databricks/
 │   ├── 01_ingestion/
-│   │   ├── load_raw_transactions.py
-│   │   └── apply_date_offset.py
+│   │   ├── apply_date_offset.ipynb
+│   │   └── load_raw_transactions.sql
 │   ├── 02_transformation/
-│   │   ├── build_dim_tables.sql
-│   │   ├── build_fact_daily_transactions.sql
-│   │   └── build_account_balance_snapshot.sql
-│   └── 03_kpis/
-│       ├── compute_kpi_daily.sql
-│       ├── compute_kpi_weekly.sql
-│       └── evaluate_alert_flags.sql
+│   │   ├── account_balance_snapshot.sql
+│   │   ├── dim_account.sql
+│   │   ├── dim_date.sql
+│   │   ├── dim_transaction_type.sql
+│   │   └── fact_daily_transactions.sql
+│   ├── 03_kpis/
+│   │   ├── compute_kpi_daily.sql
+│   │   └── compute_kpi_weekly.sql
+│   └── 04_triggers/
+│       ├── alert_flags.sql
+│       ├── trigger_01_flag_transaction_spikes.sql
+│       ├── trigger_02_flag_money_laundering.sql
+│       ├── trigger_03_flag_fraud_rate.sql
+│       └── trigger_04_flag_volume_collapse.sql
 │
 ├── n8n/
 │   ├── workflow_daily_alert.json
@@ -223,7 +230,7 @@ Automated-Transaction-Monitoring-Pipeline/
 
 Credentials are not included in this repository. To run it yourself:
 
-1. Upload the [PaySim dataset](https://www.kaggle.com/datasets/ealaxi/paysim1) to a Databricks workspace and run scripts under `databricks/` in order (01 → 02 → 03).
+1. Upload the [PaySim dataset](https://www.kaggle.com/datasets/ealaxi/paysim1) to a Databricks workspace and run scripts under `Databricks/` in order (01 → 02 → 03 → 04).
 2. Install n8n (local Docker or n8n Cloud) and import the three JSON files from `n8n/`.
 3. Create a Telegram bot via [@BotFather](https://t.me/BotFather) and a Databricks SQL warehouse. Configure both as credentials inside n8n — not inline in the workflow files.
 4. Activate the workflows.
