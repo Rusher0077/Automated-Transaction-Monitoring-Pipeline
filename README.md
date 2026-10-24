@@ -113,7 +113,7 @@ Four explainable, rule-based triggers evaluated daily and written to `alert_flag
 | Trigger | Condition | Result |
 |---|---|---|
 | **Transaction Spike** | An account executes more than 3× its own 30-day average transaction count within 24 hours | 0 rows — PaySim's maximum daily transaction count per account is 2, making the 3× threshold mathematically unreachable. Documented as a validated dataset finding, not removed. |
-| **Transfer → Cash-Out Chain** | A `TRANSFER` followed by a `CASH_OUT` from the same destination account on the same calendar day, where the amount exceeds the top 5% of daily transaction amounts | 29 same-day chains identified; 1 exceeds the ~$518K threshold. Primary money-laundering pattern in PaySim, implemented as an explicit auditable rule rather than a model. |
+| **Transfer → Cash-Out Chain** | A `TRANSFER` followed by a `CASH_OUT` from the same destination account on the same calendar day, where the cash-out amount exceeds the 95th percentile of all transaction amounts (~$518K) | 29 same-day chains identified; 1 exceeds the ~$518K threshold. Primary money-laundering pattern in PaySim, implemented as an explicit auditable rule rather than a model. |
 | **Fraud Rate Breach** | Daily `isFraud` rate exceeds 1% of total transactions | Fires on 11 of 31 days. Day 31 shows 100% fraud rate across 274 transactions, kept intentionally as a realistic stress-test of the trigger. |
 | **Volume Collapse** | Daily transaction volume drops more than 40% vs. the same day the previous week | Fires on ~10 of 31 days, reflecting genuine volume tapering in the second half of the dataset. |
 
